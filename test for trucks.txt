@@ -1,0 +1,9 @@
+warehouseId: 1, orderLines: gtin: 0008346007042, quantity: 2weight:226gtin: 0008346007059, quantity: 2weight:226gtin: 0008346007387, quantity: 2weight:56 
+
+{
+  "warehouseId": 1, "orderLines": [
+    { "gtin": "0008346007042", "quantity": 2, "weight": 226 }, 
+	{ "gtin": "0008346007059", "quantity": 2, "weight": 226 },
+	{ "gtin": "0008346007387", "quantity": 2, "weight": 56  }
+  ]
+}

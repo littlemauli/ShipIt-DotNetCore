@@ -1,15 +1,13 @@
 namespace ShipIt.Models.ApiModels
 {
-    public class outboundOrderResponse :Response
+    public class TruckResponse : Response
     {
         public double Trucks { get; set; }
-
-        //Empty constructor required for xml serialization.
-        public TruckResponse( int numberOfTrucks)
+       
+        public TruckResponse( double numberOfTrucks)
         {
-            Success= true;
             Trucks = numberOfTrucks;
-
+            Success = true;
         }
         public TruckResponse(){}
     }

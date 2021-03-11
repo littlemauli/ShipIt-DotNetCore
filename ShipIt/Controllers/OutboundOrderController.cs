@@ -1,8 +1,8 @@
-﻿﻿using System;
+﻿﻿sing System;
 using System.Collections.Generic;
 using System.Linq;
- using Microsoft.AspNetCore.Mvc;
- using ShipIt.Exceptions;
+using Microsoft.AspNetCore.Mvc;
+using ShipIt.Exceptions;
 using ShipIt.Models.ApiModels;
 using ShipIt.Repositories;
 
@@ -23,7 +23,7 @@ namespace ShipIt.Controllers
         }
 
         [HttpPost("")]
-        public void Post([FromBody] OutboundOrderRequestModel request)
+        public TruckResponse Post([FromBody] OutboundOrderRequestModel request)
         {
             Log.Info(String.Format("Processing outbound order: {0}", request));
 
@@ -95,13 +95,15 @@ namespace ShipIt.Controllers
 
             _stockRepository.RemoveStock(request.WarehouseId, lineItems);
 
-             double totalWeight=0;
-            for (int i= 0; i < lineItems.Count; i++) 
-                {
-                 double oneItemWeight =lineItems[i].Quantity * lineItems[i].Weight;
-                 totalWeight = totalWeight + oneItemWeight;
+            double totalWeight = 0;
+            for (int i = 0; i < lineItems.Count; i++)
+            {
+                double oneItemWeight = lineItems[i].Quantity * lineItems[i].Weight;
+                totalWeight = totalWeight + oneItemWeight;
             }
-            double numberOfTrucks = Math.Ceiling(totalWeight/2000000);
+            double numberOfTrucks = Math.Ceiling(totalWeight / 2000000);
+
+            return new TruckResponse(numberOfTrucks);
 
         }
     }

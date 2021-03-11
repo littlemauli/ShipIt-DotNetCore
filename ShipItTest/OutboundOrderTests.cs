@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using ShipIt.Controllers;
 using ShipIt.Exceptions;
@@ -43,7 +44,7 @@ namespace ShipItTest
         public void TestOutboundOrder()
         {
             onSetUp();
-            stockRepository.AddStock(WAREHOUSE_ID, new List<StockAlteration>() { new StockAlteration(productId, 10) });
+            stockRepository.AddStock(WAREHOUSE_ID, new List<StockAlteration>() { new StockAlteration(productId, 10, 200) });
             var outboundOrder = new OutboundOrderRequestModel()
             {
                 WarehouseId = WAREHOUSE_ID,
@@ -67,7 +68,7 @@ namespace ShipItTest
         public void TestOutboundOrderInsufficientStock()
         {
             onSetUp();
-            stockRepository.AddStock(WAREHOUSE_ID, new List<StockAlteration>() { new StockAlteration(productId, 10) });
+            stockRepository.AddStock(WAREHOUSE_ID, new List<StockAlteration>() { new StockAlteration(productId, 10, 200) });
             var outboundOrder = new OutboundOrderRequestModel()
             {
                 WarehouseId = WAREHOUSE_ID,
@@ -98,7 +99,7 @@ namespace ShipItTest
             onSetUp();
             var noStockGtin = GTIN + "XYZ";
             productRepository.AddProducts(new List<ProductDataModel>() { new ProductBuilder().setGtin(noStockGtin).CreateProductDatabaseModel() });
-            stockRepository.AddStock(WAREHOUSE_ID, new List<StockAlteration>() { new StockAlteration(productId, 10) });
+            stockRepository.AddStock(WAREHOUSE_ID, new List<StockAlteration>() { new StockAlteration(productId, 10, 200) });
 
             var outboundOrder = new OutboundOrderRequestModel()
             {
@@ -169,7 +170,7 @@ namespace ShipItTest
         public void TestOutboundOrderDuplicateGtins()
         {
             onSetUp();
-            stockRepository.AddStock(WAREHOUSE_ID, new List<StockAlteration>() { new StockAlteration(productId, 10) });
+            stockRepository.AddStock(WAREHOUSE_ID, new List<StockAlteration>() { new StockAlteration(productId, 10, 200) });
             var outboundOrder = new OutboundOrderRequestModel()
             {
                 WarehouseId = WAREHOUSE_ID,
@@ -191,6 +192,7 @@ namespace ShipItTest
             try
             {
                 outboundOrderController.Post(outboundOrder);
+                Console.WriteLine("PostContent\n" + outboundOrder)
                 Assert.Fail("Expected exception to be thrown.");
             }
             catch (ValidationException e)
