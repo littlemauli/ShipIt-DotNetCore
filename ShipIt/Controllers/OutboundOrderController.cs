@@ -53,7 +53,7 @@ namespace ShipIt.Controllers
                 else
                 {
                     var product = products[orderLine.gtin];
-                    lineItems.Add(new StockAlteration(product.Id, orderLine.quantity));
+                    lineItems.Add(new StockAlteration(product.Id, orderLine.quantity, product.Weight));
                     productIds.Add(product.Id);
                 }
             }
@@ -94,6 +94,15 @@ namespace ShipIt.Controllers
             }
 
             _stockRepository.RemoveStock(request.WarehouseId, lineItems);
+
+             double totalWeight=0;
+            for (int i= 0; i < lineItems.Count; i++) 
+                {
+                 double oneItemWeight =lineItems[i].Quantity * lineItems[i].Weight;
+                 totalWeight = totalWeight + oneItemWeight;
+            }
+            double numberOfTrucks = Math.Ceiling(totalWeight/2000000);
+
         }
     }
 }
