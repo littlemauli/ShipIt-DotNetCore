@@ -6,6 +6,8 @@ using ShipIt.Exceptions;
 using ShipIt.Models.ApiModels;
 using ShipIt.Models.DataModels;
 using ShipIt.Repositories;
+using System.Diagnostics;
+using System.Threading;
 
 namespace ShipIt.Controllers
 {
@@ -30,21 +32,33 @@ namespace ShipIt.Controllers
         [HttpGet("{warehouseId}")]
         public InboundOrderResponse Get([FromRoute] int warehouseId)
         {
+            
             Log.Info("orderIn for warehouseId: " + warehouseId);
-
+             var watch = System.Diagnostics.Stopwatch.StartNew();
             var operationsManager = new Employee(_employeeRepository.GetOperationsManager(warehouseId));
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Console.WriteLine(elapsedMs);
 
             Log.Debug(String.Format("Found operations manager: {0}", operationsManager));
-
+             var watch1 = System.Diagnostics.Stopwatch.StartNew();
             var allStock = _stockRepository.GetStockByWarehouseId(warehouseId);
-
+            watch1.Stop();
+            var elapsedMs1 = watch1.ElapsedMilliseconds;
+            Console.WriteLine(elapsedMs1);
+            var watch2 = System.Diagnostics.Stopwatch.StartNew();
             Dictionary<Company, List<InboundOrderLine>> orderlinesByCompany = new Dictionary<Company, List<InboundOrderLine>>();
             foreach (var stock in allStock)
-            {
+            {   
+                 
                 Product product = new Product(_productRepository.GetProductById(stock.ProductId));
+                
+
                 if(stock.held < product.LowerThreshold && !product.Discontinued)
                 {
+                    
                     Company company = new Company(_companyRepository.GetCompany(product.Gcp));
+                     
 
                     var orderQuantity = Math.Max(product.LowerThreshold * 3 - stock.held, product.MinimumOrderQuantity);
 
@@ -62,6 +76,9 @@ namespace ShipIt.Controllers
                         });
                 }
             }
+             watch2.Stop();
+                 var elapsedMs2 = watch2.ElapsedMilliseconds;
+                 Console.WriteLine(elapsedMs2);
 
             Log.Debug(String.Format("Constructed order lines: {0}", orderlinesByCompany));
 
