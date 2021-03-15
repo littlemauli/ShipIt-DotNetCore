@@ -14,6 +14,7 @@ namespace ShipIt.Repositories
         int GetTrackedItemsCount();
         int GetStockHeldSum();
         IEnumerable<StockDataModel> GetStockByWarehouseId(int id);
+        //IEnumerable<StockDataModel>  GetStockByWarehouseIdJoinedTable(int id);
         Dictionary<int, StockDataModel> GetStockByWarehouseAndProductIds(int warehouseId, List<int> productIds);
         void RemoveStock(int warehouseId, List<StockAlteration> lineItems);
         void AddStock(int warehouseId, List<StockAlteration> lineItems);
@@ -48,6 +49,21 @@ namespace ShipIt.Repositories
                 return new List<StockDataModel>();
             }
         }
+
+        //  public IEnumerable<ProductDataModel> GetStockByWarehouseIdJoinedTable(int id)
+        // {
+        //     string sql = "SELECT p_id, hld, w_id, gtin_cd, gcp_cd, gtin_nm, m_g, l_th, ds, min_qt FROM joined_gtin_stock WHERE w_id = @w_id";
+        //     var parameter = new NpgsqlParameter("@w_id", id);
+        //     string noProductWithIdErrorMessage = string.Format("No stock found with w_id: {0}", id);
+        //     try
+        //     {
+        //         return base.RunGetQuery(sql, reader => new ProductDataModel(reader), noProductWithIdErrorMessage, parameter).ToList();
+        //     }
+        //     catch (NoSuchEntityException)
+        //     {
+        //         return new List<ProductDataModel>();
+        //     }
+        // }
 
         public Dictionary<int, StockDataModel> GetStockByWarehouseAndProductIds(int warehouseId, List<int> productIds)
         {

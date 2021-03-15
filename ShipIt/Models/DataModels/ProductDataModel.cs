@@ -50,6 +50,11 @@ namespace ShipIt.Models.DataModels
 
             return parameters;
         }
+
+        internal object RunGetQuery(string sql, Func<object, StockProductDataModel> p, string noProductWithIdErrorMessage, NpgsqlParameter parameter)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class ProductDataModel : DataModel
@@ -77,6 +82,8 @@ namespace ShipIt.Models.DataModels
 
         [DatabaseColumnName("min_qt")]
         public int MinimumOrderQuantity { get; set; }
+
+        public int Held { get; set; }
 
         public ProductDataModel(IDataReader dataReader) : base(dataReader)
         { }

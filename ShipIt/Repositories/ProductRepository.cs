@@ -13,7 +13,10 @@ namespace ShipIt.Repositories
         int GetCount();
         ProductDataModel GetProductByGtin(string gtin);
         IEnumerable<ProductDataModel> GetProductsByGtin(List<string> gtins);
+        //IEnumerable<ProductDataModel> GetProductsByGtinJoinedTable(int id);
         ProductDataModel GetProductById(int id);
+
+        IEnumerable<StockProductDataModel> GetProductsByGtinJoinedTable(int id);
         void AddProducts(IEnumerable<ProductDataModel> products);
         void DiscontinueProductByGtin(string gtin);
     }
@@ -41,6 +44,25 @@ namespace ShipIt.Repositories
             string sql = String.Format("SELECT p_id, gtin_cd, gcp_cd, gtin_nm, m_g, l_th, ds, min_qt FROM gtin WHERE gtin_cd IN ('{0}')", 
                 String.Join("','", gtins));
             return base.RunGetQuery(sql, reader => new ProductDataModel(reader), "No products found with given gtin ids", null);
+        }
+
+        public IEnumerable<StockProductDataModel> GetProductsByGtinJoinedTable(int id)
+        {
+            string sql = "SELECT * FROM stock INNER JOIN gtin ON stock.p_id = gtin.p_id WHERE (w_id = @w_id) AND (hld < l_th) AND (ds = 0)"; 
+            var parameter = new NpgsqlParameter("@w_id", id);
+            string noProductWithIdErrorMessage = string.Format("No stock found with w_id: {0}", id);
+            try
+            {
+                return base.RunGetQuery(sql, reader => new StockProductDataModel(reader), noProductWithIdErrorMessage, parameter).ToList();
+            }
+            catch (NoSuchEntityException)
+            {
+                return new List<StockProductDataModel>();
+            }
+            
+            //p_id, hld, w_id, gtin_cd, gcp_cd, gtin_nm, m_g, l_th, ds, min_qt
+            //     String.Join("','", gtins));
+            // return base.RunGetQuery(sql, reader => new ProductDataModel(reader), "No products found with given gtin ids", null);
         }
 
         public ProductDataModel GetProductById(int id)

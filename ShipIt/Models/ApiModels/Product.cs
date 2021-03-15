@@ -14,6 +14,7 @@ namespace ShipIt.Models.ApiModels
         public int LowerThreshold { get; set; }
         public bool Discontinued { get; set; }
         public int MinimumOrderQuantity { get; set; }
+        public int Held { get; set; }
 
         public Product(ProductDataModel dataModel)
         {
