@@ -44,7 +44,7 @@ namespace ShipIt.Controllers
             var watch1 = System.Diagnostics.Stopwatch.StartNew();
             // var allStock = _stockRepository.GetStockByWarehouseIdJoinedTable(warehouseId);
             var allStock = _productRepository.GetProductsByGtinJoinedTable(warehouseId);
-            Console.WriteLine(allStock.Count());
+            //Console.WriteLine(allStock.Count());
             watch1.Stop();
             var elapsedMs1 = watch1.ElapsedMilliseconds;
             Console.WriteLine(elapsedMs1);
@@ -59,7 +59,7 @@ namespace ShipIt.Controllers
 
                 //  Product product = new Product(_productRepository.GetProductById(stock.ProductId)); 
                 StockProductDataModel product = new StockProductDataModel(stock);
-                Console.WriteLine(product);
+                
 
                 // if(stock.held < product.LowerThreshold && !product.Discontinued)
                 // {

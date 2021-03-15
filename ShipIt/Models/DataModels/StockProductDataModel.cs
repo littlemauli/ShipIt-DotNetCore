@@ -30,7 +30,7 @@ namespace ShipIt.Models.DataModels
         public int LowerThreshold { get; set; }
 
         [DatabaseColumnName("ds")]
-        public bool Discontinued { get; set; }
+        public int Discontinued { get; set; }
 
         [DatabaseColumnName("min_qt")]
         public int MinimumOrderQuantity { get; set; }

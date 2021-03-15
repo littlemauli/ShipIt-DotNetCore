@@ -60,9 +60,6 @@ namespace ShipIt.Repositories
                 return new List<StockProductDataModel>();
             }
             
-            //p_id, hld, w_id, gtin_cd, gcp_cd, gtin_nm, m_g, l_th, ds, min_qt
-            //     String.Join("','", gtins));
-            // return base.RunGetQuery(sql, reader => new ProductDataModel(reader), "No products found with given gtin ids", null);
         }
 
         public ProductDataModel GetProductById(int id)
